@@ -20,9 +20,9 @@ namespace Unit_Testing
 
         bool compare(Vector3 a, Vector3 b, float tolerance = DEFAULT_TOLERANCE)
         {
-            if (Math.Abs(a.x - b.x) > tolerance ||
-                Math.Abs(a.y - b.y) > tolerance ||
-                Math.Abs(a.z - b.z) > tolerance)
+            if (Math.Abs(a.i - b.i) > tolerance ||
+                Math.Abs(a.j - b.j) > tolerance ||
+                Math.Abs(a.k - b.k) > tolerance)
                 return false;
             return true;
         }
