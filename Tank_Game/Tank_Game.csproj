@@ -49,5 +49,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Math_Library\Math_Library.csproj">
+      <Project>{5241bb74-f315-4bf9-a5c2-5d0047bee26b}</Project>
+      <Name>Math_Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\Raylib\Bindings\Raylib.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

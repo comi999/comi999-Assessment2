@@ -85,13 +85,39 @@ namespace Math_Library
             return (float)(Math.Pow(i, 2) + Math.Pow(j, 2) + Math.Pow(k, 2));
         }
 
-        public Vector3 Normalise()
+        public void Normalise()
         {
             float magnitude = (float)Math.Sqrt(Math.Pow(i, 2) + Math.Pow(j, 2) + Math.Pow(k, 2));
             i /= magnitude;
             j /= magnitude;
             k /= magnitude;
-            return new Vector3(i, j, k);
+        }
+
+        public void RotateX(double theta)
+        {
+            Vector3 temp = (Vector3)MemberwiseClone();
+            temp = new Matrix3(1, 0, 0, 0, (float)Math.Cos(theta), (float)Math.Sin(theta), 0, -(float)Math.Sin(theta), (float)Math.Cos(theta)) * temp;
+            i = temp.i;
+            j = temp.j;
+            k = temp.k;
+        }
+
+        public void RotateY(double theta)
+        {
+            Vector3 temp = (Vector3)MemberwiseClone();
+            temp = new Matrix3((float)Math.Cos(theta), 0, -(float)Math.Sin(theta), 0, 1, 0, (float)Math.Sin(theta), 0, (float)Math.Cos(theta)) * temp;
+            i = temp.i;
+            j = temp.j;
+            k = temp.k;
+        }
+
+        public void RotateZ(double theta)
+        {
+            Vector3 temp = (Vector3)MemberwiseClone();
+            temp = new Matrix3((float)Math.Cos(theta), (float)Math.Sin(theta), 0, -(float)Math.Sin(theta), (float)Math.Cos(theta), 0, 0, 0, 1) * temp;
+            i = temp.i;
+            j = temp.j;
+            k = temp.k;
         }
     }
 
@@ -119,8 +145,25 @@ namespace Math_Library
         public Matrix3(Vector3 v1, Vector3 v2, Vector3 v3)
         {
             i1 = v1.i; j1 = v1.j; k1 = v1.k;
-            i2 = v2.i; j2 = v2.j; k2 = v3.k;
+            i2 = v2.i; j2 = v2.j; k2 = v2.k;
             i3 = v3.i; j3 = v3.j; k3 = v3.k;
+        }
+
+        public Matrix3(double thetaX, double thetaY, double thetaZ)
+        {
+
+        }
+
+        public static Matrix3 operator +(Matrix3 lhs, Matrix3 rhs)
+        {
+            return new Matrix3(lhs.i1 + rhs.i1, lhs.j1 + rhs.j1, lhs.k1 + rhs.k1,
+                               lhs.i2 + rhs.i2, lhs.j2 + rhs.j2, lhs.k2 + rhs.k2,
+                               lhs.i3 + rhs.i3, lhs.j3 + rhs.j3, lhs.k3 + rhs.k3);
+        }
+
+        public static Matrix3 operator -(Matrix3 lhs, Matrix3 rhs)
+        {
+            return lhs + -1 * rhs;
         }
 
         public static Matrix3 operator *(Matrix3 lhs, Matrix3 rhs)
@@ -148,21 +191,43 @@ namespace Math_Library
             return output;
         }
 
-        public static Vector3 operator *(Vector3 lhs, Matrix3 rhs)
+        public static Vector3 operator *(Matrix3 lhs, Vector3 rhs)
         {
             Vector3 output = new Vector3();
 
-            Vector3 rhsCol1 = new Vector3(rhs.i1, rhs.i2, rhs.i3);
-            Vector3 rhsCol2 = new Vector3(rhs.j1, rhs.j2, rhs.j3);
-            Vector3 rhsCol3 = new Vector3(rhs.k1, rhs.k2, rhs.k3);
+            Vector3 lhsCol1 = new Vector3(lhs.i1, lhs.i2, lhs.i3);
+            Vector3 lhsCol2 = new Vector3(lhs.j1, lhs.j2, lhs.j3);
+            Vector3 lhsCol3 = new Vector3(lhs.k1, lhs.k2, lhs.k3);
 
-            output.i = lhs * rhsCol1;
-            output.j = lhs * rhsCol2;
-            output.k = lhs * rhsCol3;
+            output.i = rhs * lhsCol1;
+            output.j = rhs * lhsCol2;
+            output.k = rhs * lhsCol3;
 
             return output;
         }
 
+        public static Matrix3 operator *(float lhs, Matrix3 rhs)
+        {
+            return new Matrix3(lhs * rhs.i1, lhs * rhs.j1, lhs * rhs.k1,
+                               lhs * rhs.i2, lhs * rhs.j2, lhs * rhs.k2,
+                               lhs * rhs.i3, lhs * rhs.j3, lhs * rhs.k3);
+        }
+
+        public void Transpose()
+        {
+            //Classes are reference types, so I used The following function to copy individual members into a new Matrix3 temp.
+            Matrix3 temp = (Matrix3)MemberwiseClone();
+
+            i1 = temp.i1;
+            j1 = temp.i2;
+            k1 = temp.i3;
+            i2 = temp.j1;
+            j2 = temp.j2;
+            k2 = temp.j3;
+            i3 = temp.k1;
+            j3 = temp.k2;
+            k3 = temp.k3;
+        }
 
         public override string ToString()
         {
