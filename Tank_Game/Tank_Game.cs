@@ -1,24 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Math_Library;
 using rl = Raylib;
+using static Raylib.Raylib;
+using System.Threading;
+using System.Diagnostics;
 
 namespace Tank_Game
 {
     class Tank_Game
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Matrix3 A = new Matrix3(1, 2, 3, 4, 5, 6, 7, 8, 9);
-            Matrix3 B = new Matrix3(1, 1, 1, 1, 1, 1, 1, 1, 1);
-            Vector3 C = new Vector3(2, 3, 4);
-            Vector3 D = new Vector3(0, 1, 0);
-            Vector3 E = new Vector3(5, 6, 7);
-            
-            while (true) ;
+            Game game = new Game();
+
+            InitWindow(2500, 1500, "Hello World");
+            game.Init();
+
+            while (!WindowShouldClose())
+            {
+                game.Update();
+                game.Draw();
+            }
+
+            game.Shutdown();
+
+            CloseWindow();
         }
     }
 }

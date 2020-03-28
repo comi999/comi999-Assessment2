@@ -130,9 +130,9 @@ namespace Math_Library
 
         public Matrix3()
         {
-            i1 = 0; j1 = 0; k1 = 0;
-            i2 = 0; j2 = 0; k2 = 0;
-            i3 = 0; j3 = 0; k3 = 0;
+            i1 = 1; j1 = 0; k1 = 0;
+            i2 = 0; j2 = 1; k2 = 0;
+            i3 = 0; j3 = 0; k3 = 1;
         }
 
         public Matrix3(float i1, float j1, float k1, float i2, float j2, float k2, float i3, float j3, float k3)
@@ -149,10 +149,7 @@ namespace Math_Library
             i3 = v3.i; j3 = v3.j; k3 = v3.k;
         }
 
-        public Matrix3(double thetaX, double thetaY, double thetaZ)
-        {
 
-        }
 
         public static Matrix3 operator +(Matrix3 lhs, Matrix3 rhs)
         {
@@ -229,9 +226,67 @@ namespace Math_Library
             k3 = temp.k3;
         }
 
+        public void RotateX(float theta)
+        {
+            Matrix3 temp = (Matrix3)MemberwiseClone();
+            temp = new Matrix3(1, 0, 0, 0, (float)Math.Cos(theta), (float)Math.Sin(theta), 0, -(float)Math.Sin(theta), (float)Math.Cos(theta)) * temp;
+            i1 = temp.i1;
+            j1 = temp.j1;
+            k1 = temp.k1;
+            i2 = temp.i2;
+            j2 = temp.j2;
+            k2 = temp.k2;
+            i3 = temp.i3;
+            j3 = temp.j3;
+            k3 = temp.k3;
+        }
+
+        public void RotateY(float theta)
+        {
+            Matrix3 temp = (Matrix3)MemberwiseClone();
+            temp = new Matrix3((float)Math.Cos(theta), 0, -(float)Math.Sin(theta), 0, 1, 0, (float)Math.Sin(theta), 0, (float)Math.Cos(theta)) * temp;
+            i1 = temp.i1;
+            j1 = temp.j1;
+            k1 = temp.k1;
+            i2 = temp.i2;
+            j2 = temp.j2;
+            k2 = temp.k2;
+            i3 = temp.i3;
+            j3 = temp.j3;
+            k3 = temp.k3;
+        }
+
+        public void RotateZ(float theta)
+        {
+            Matrix3 temp = (Matrix3)MemberwiseClone();
+            temp = new Matrix3((float)Math.Cos(theta), (float)Math.Sin(theta), 0, -(float)Math.Sin(theta), (float)Math.Cos(theta), 0, 0, 0, 1) * temp;
+            i1 = temp.i1;
+            j1 = temp.j1;
+            k1 = temp.k1;
+            i2 = temp.i2;
+            j2 = temp.j2;
+            k2 = temp.k2;
+            i3 = temp.i3;
+            j3 = temp.j3;
+            k3 = temp.k3;
+        }
+
         public override string ToString()
         {
             return i1 + ", " + j1 + ", " + k1 + ", " + i2 + ", " + j2 + ", " + k2 + ", " + i3 + ", " + j3 + ", " + k3;
+        }
+    }
+
+    public static class NumberExtensions
+    {
+        public static float ConvertToRadians(this float degrees)
+        {
+            return degrees / 180 * (float)Math.PI ;
+        }
+
+        public static float ConvertToDegrees(this float radians)
+        {
+            return radians * 180 / (float)Math.PI;
         }
     }
 }
