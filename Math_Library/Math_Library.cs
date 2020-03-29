@@ -77,7 +77,7 @@ namespace Math_Library
         //Vector functions
         public float Magnitude()
         {
-            return (float)Math.Sqrt(Math.Pow(i, 2) + Math.Pow(j, 2) + Math.Pow(k, 2));
+            return (float)Math.Sqrt(i*i + j*j + k*k);
         }
 
         public float MagnitudeSqrd()
@@ -256,10 +256,10 @@ namespace Math_Library
             k3 = temp.k3;
         }
 
-        public void RotateZ(float theta)
+        public Matrix3 RotateZ(float theta)
         {
             Matrix3 temp = (Matrix3)MemberwiseClone();
-            temp = new Matrix3((float)Math.Cos(theta), (float)Math.Sin(theta), 0, -(float)Math.Sin(theta), (float)Math.Cos(theta), 0, 0, 0, 1) * temp;
+            temp = temp * new Matrix3((float)Math.Cos(theta), (float)Math.Sin(theta), 0, -(float)Math.Sin(theta), (float)Math.Cos(theta), 0, 0, 0, 1);
             i1 = temp.i1;
             j1 = temp.j1;
             k1 = temp.k1;
@@ -269,6 +269,23 @@ namespace Math_Library
             i3 = temp.i3;
             j3 = temp.j3;
             k3 = temp.k3;
+            return this;
+        }
+
+        public Matrix3 Translate(float X, float Y)
+        {
+            Matrix3 temp = (Matrix3)MemberwiseClone();
+            temp = temp * new Matrix3(1, 0, 0, 0, 1, 0, X, Y, 0);
+            i1 = temp.i1;
+            j1 = temp.j1;
+            k1 = temp.k1;
+            i2 = temp.i2;
+            j2 = temp.j2;
+            k2 = temp.k2;
+            i3 = temp.i3;
+            j3 = temp.j3;
+            k3 = temp.k3;
+            return this;
         }
 
         public override string ToString()

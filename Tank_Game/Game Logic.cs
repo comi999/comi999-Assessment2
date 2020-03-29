@@ -16,6 +16,14 @@ namespace Tank_Game
 
     class Game
     {
+        GameObject tankBody;
+        GameObject tankBarrel;
+        GameObject world;
+
+
+
+
+
 
         Stopwatch stopwatch = new Stopwatch();
 
@@ -30,7 +38,8 @@ namespace Tank_Game
 
         rl.Image logo;
         rl.Texture2D texture;
-        Matrix3 logoVector = new Matrix3();
+        Matrix3 logoVector = new Matrix3(1,0,0,0,1,0,0,0,1);
+
 
         public Game()
         {
@@ -46,25 +55,69 @@ namespace Tank_Game
                 Console.WriteLine("Stopwatch high-resolution frequency: {0} ticks per second", Stopwatch.Frequency);
             }
 
-            //logo = LoadImage("..\\Images\\aie-logo-dark.jpg");
-            //logo = LoadImage(@"..\Images\aie-logo-dark.jpg");
-            logo = LoadImage("../Images/barrelBlue.png");
-            texture = LoadTextureFromImage(logo);
+            //-------------------------------------GAME OBJECTS------------------------------------------------------------------------------------
+            world = new GameObject("", 0);
+            
+            tankBody = new GameObject("../Images/tankBlue_outline.png", 0);
+            
+            tankBarrel = new GameObject("../Images/barrelBlue.png", 0);
 
+            world.children.Add(tankBody);
+
+            tankBody.parent = world;
+
+            tankBody.children.Add(tankBarrel);
+
+            tankBarrel.parent = tankBody;
+
+            tankBody.LocalMatrix = new Matrix3(1, 0, 0, 0, 1, 0, 1250, 750, 1);
+
+            tankBarrel.LocalMatrix = new Matrix3(1, 0, 0, 0, 1, 0, 0, -25, 1);
 
         }
 
         class GameObject
         {
+            public Texture2D sprite;
+            public float rotation;
+
+            public GameObject(string imageLocation, float rotation)
+            {
+                sprite = LoadTextureFromImage(LoadImage(imageLocation));
+                this.rotation = rotation;
+            }
+
             public Matrix3 localMatrix = new Matrix3();
+            public Matrix3 LocalMatrix
+            {
+                get
+                {
+                    return localMatrix;
+                }
+                set
+                {
+                    localMatrix = value;
+                    RecalculateGlobal();
+                }
+            }
             public Matrix3 globalMatrix = new Matrix3();
 
             public GameObject parent;
             public List<GameObject> children = new List<GameObject>();
 
+
+            public void DrawObject(Color color)
+            {
+                DrawTexturePro(sprite, new Rectangle(0, 0, sprite.width, sprite.height), new Rectangle(globalMatrix.i3, globalMatrix.j3, sprite.width, sprite.height), new Vector2(sprite.width / 2, sprite.height / 2), rotation.ConvertToDegrees(), color);
+            }
+
             public void RecalculateGlobal()
             {
-                globalMatrix = localMatrix * parent.globalMatrix;
+                if (parent == null)
+                    globalMatrix = localMatrix;
+                else
+                    globalMatrix = localMatrix * parent.globalMatrix;
+                rotation = (float)Math.Atan(globalMatrix.j1 / globalMatrix.i1);
                 foreach (GameObject child in children) 
                     child.RecalculateGlobal();
             }
@@ -89,30 +142,24 @@ namespace Tank_Game
             frames++;
 
             // insert game logic here
-
-            f += deltaTime;
-            Matrix3 Translate = new Matrix3(1, 0, 0, 0, 1, 0, (float)Math.Sin(f) * 800, 0, 1);
-            Matrix3 Rotation = new Matrix3(); Rotation.RotateZ(f * 360f.ConvertToRadians());
-            logoVector = Rotation * Translate;
-
+            if (IsKeyDown(KeyboardKey.KEY_LEFT))
+            {
+                tankBody.LocalMatrix = new Matrix3(1, 0, 0, 0, 1, 0, -1000*deltaTime, 0, 1) * tankBody.LocalMatrix;
+            }
+            
+            tankBarrel.LocalMatrix = new Matrix3().RotateZ(f += 0.1f) ;
+           
         }
-
-
         float f = 0;
-        
-
-
         public void Draw()
         {
-
             BeginDrawing();
 
             ClearBackground(rl.Color.WHITE);
 
-            DrawText(fps.ToString(), 10, 10, 500, rl.Color.RED);
-
-            DrawTexturePro(texture, new Rectangle(0, 0, texture.width, texture.height), new Rectangle(2500 / 2 + logoVector.i3, 1500 / 2 + logoVector.j3, texture.width, texture.height), new Vector2(texture.width / 2, texture.height / 2 ), ((float)Math.Atan(logoVector.j2/logoVector.i2)).ConvertToDegrees(), Color.WHITE) ;
-            
+            //world.RecalculateGlobal();
+            tankBody.DrawObject(Color.WHITE);
+            tankBarrel.DrawObject(Color.GRAY);
 
             EndDrawing();
         }
