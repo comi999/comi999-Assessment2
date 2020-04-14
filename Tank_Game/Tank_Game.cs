@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Math_Library;
-using rl = Raylib;
+﻿using Math_Library;
+using Raylib;
 using static Raylib.Raylib;
-using System.Threading;
-using System.Diagnostics;
 
 namespace Tank_Game
 {
-    class Tank_Game
+    public class Tank_Game
     {
         static void Main()
         {
-            Game game = new Game();
-
-            InitWindow(2500, 1500, "Hello World");
+            Game game = new Game(2500, 1500);
+            
+            
             game.Init();
 
             while (!WindowShouldClose())
