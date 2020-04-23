@@ -215,7 +215,8 @@ namespace Unit_Testing
             m3a = m3a.RotateX(3.98f);
 
             Assert.IsTrue(compare(m3a,
-                new Matrix3(1, 0, 0, 0, -0.668648f, -0.743579f, 0, 0.743579f, -0.668648f)));
+                new Matrix3(1, 0, 0, 0, -0.668648f, -0.743579f, 0, 0.743579f, -0.668648f).Transpose()));
+            //Result has been transposed to fit with row major math library.
         }
 
         [TestMethod]
@@ -225,7 +226,8 @@ namespace Unit_Testing
             m4a = m4a.RotateX(4.5f);
 
             Assert.IsTrue(compare(m4a,
-                new Matrix4(1, 0, 0, 0, 0, -0.210796f, -0.97753f, 0, 0, 0.97753f, -0.210796f, 0, 0, 0, 0, 1)));
+                new Matrix4(1, 0, 0, 0, 0, -0.210796f, -0.97753f, 0, 0, 0.97753f, -0.210796f, 0, 0, 0, 0, 1).Transpose()));
+            //Result has been transposed to fit with row major math library.
         }
 
         [TestMethod]
@@ -235,7 +237,8 @@ namespace Unit_Testing
             m3b = m3b.RotateY(1.76f);
 
             Assert.IsTrue(compare(m3b,
-                new Matrix3(-0.188077f, 0, -0.982154f, 0, 1, 0, 0.982154f, 0, -0.188077f)));
+                new Matrix3(-0.188077f, 0, -0.982154f, 0, 1, 0, 0.982154f, 0, -0.188077f).Transpose()));
+            //Result has been transposed to fit with row major math library.
         }
 
         [TestMethod]
@@ -245,7 +248,8 @@ namespace Unit_Testing
             m4b = m4b.RotateY(-2.6f);
 
             Assert.IsTrue(compare(m4b,
-                new Matrix4(-0.856889f, 0, 0.515501f, 0, 0, 1, 0, 0, -0.515501f, 0, -0.856889f, 0, 0, 0, 0, 1)));
+                new Matrix4(-0.856889f, 0, 0.515501f, 0, 0, 1, 0, 0, -0.515501f, 0, -0.856889f, 0, 0, 0, 0, 1).Transpose()));
+            //Result has been transposed to fit with row major math library.
         }
 
         [TestMethod]
@@ -255,7 +259,8 @@ namespace Unit_Testing
             m3c = m3c.RotateZ(9.62f);
 
             Assert.IsTrue(compare(m3c,
-                new Matrix3(-0.981005f, -0.193984f, 0, 0.193984f, -0.981005f, 0, 0, 0, 1)));
+                new Matrix3(-0.981005f, -0.193984f, 0, 0.193984f, -0.981005f, 0, 0, 0, 1).Transpose()));
+            //Result has been transposed to fit with row major math library.
         }
 
         [TestMethod]
@@ -265,7 +270,8 @@ namespace Unit_Testing
             m4c = m4c.RotateZ(0.72f);
 
             Assert.IsTrue(compare(m4c,
-                new Matrix4(0.751806f, 0.659385f, 0, 0, -0.659385f, 0.751806f, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)));
+                new Matrix4(0.751806f, 0.659385f, 0, 0, -0.659385f, 0.751806f, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1).Transpose()));
+            //Result has been transposed to fit with row major math library.
         }
 
         [TestMethod]
@@ -332,7 +338,8 @@ namespace Unit_Testing
             Matrix3 m3d = m3a * m3c;
 
             Assert.IsTrue(compare(m3d,
-                new Matrix3(-0.981004655361f, 0.129707172513f, 0.14424264431f, 0.193984255195f, 0.655946731567f, 0.729454636574f, 0, 0.743579149246f, -0.668647944927f)));
+                new Matrix3(-0.981004655361f, 0.129707172513f, 0.14424264431f, 0.193984255195f, 0.655946731567f, 0.729454636574f, 0, 0.743579149246f, -0.668647944927f).Transpose()));
+            //Result has been transposed to fit with row major math library.
         }
 
         [TestMethod]
@@ -347,7 +354,8 @@ namespace Unit_Testing
             Matrix4 m4d = m4c * m4b;
 
             Assert.IsTrue(compare(m4d,
-                new Matrix4(-0.644213855267f, -0.565019249916f, 0.515501439571f, 0, -0.659384667873f, 0.751805722713f, 0, 0, -0.387556940317f, -0.339913755655f, -0.856888711452f, 0, 0, 0, 0, 1)));
+                new Matrix4(-0.644213855267f, -0.565019249916f, 0.515501439571f, 0, -0.659384667873f, 0.751805722713f, 0, 0, -0.387556940317f, -0.339913755655f, -0.856888711452f, 0, 0, 0, 0, 1).Transpose()));
+            //Result has been transposed to fit with row major math library.
         }
 
         [TestMethod]
@@ -360,7 +368,8 @@ namespace Unit_Testing
 
             Vector3 v3a = new Vector3(13.5f, -48.23f, 1);
 
-            Vector3 v3b = m3b * v3a;
+            Vector3 v3b = m3b.Transpose() * v3a;
+            //Result has been transposed to fit with row major math library.
 
             Assert.IsTrue(compare(v3b, new Vector3(68.5f, -4.23f, 1)));
         }
@@ -371,8 +380,9 @@ namespace Unit_Testing
             // homogeneous point translation
             Matrix3 m3c = new Matrix3();
             m3c = m3c.RotateZ(2.2f);
-            m3c.i3 = 55; m3c.j3 = 44; m3c.k3 = 1;
-
+            
+            m3c.k1 = 55; m3c.k2 = 44; m3c.k3 = 1;
+            //Result has been transposed to fit with row major math library.
             Vector3 v3a = new Vector3(13.5f, -48.23f, 1);
 
             Vector3 v3c = m3c * v3a;
@@ -391,7 +401,7 @@ namespace Unit_Testing
 
             Vector4 v4a = new Vector4(13.5f, -48.23f, -54, 1);
 
-            Vector4 v4c = m4b * v4a;
+            Vector4 v4c = m4b.Transpose() * v4a;
             Assert.IsTrue(compare(v4c, new Vector4(68.5f, -4.23f, 45, 1)));
         }
 
@@ -401,8 +411,8 @@ namespace Unit_Testing
             // homogeneous point translation
             Matrix4 m4c = new Matrix4();
             m4c = m4c.RotateZ(2.2f);
-            m4c.i4 = 55; m4c.j4 = 44; m4c.k4 = 99; m4c.w4 = 1;
-
+            m4c.w1 = 55; m4c.w2 = 44; m4c.w3 = 99; m4c.w4 = 1;
+            //Result has been transposed to fit with row major math library.
             Vector4 v4a = new Vector4(13.5f, -48.23f, -54, 1);
 
             Vector4 v4c = m4c * v4a;
@@ -419,7 +429,7 @@ namespace Unit_Testing
 
             Vector3 v3a = new Vector3(13.5f, -48.23f, 0);
 
-            Vector3 v3b = m3b * v3a;
+            Vector3 v3b = m3b.Transpose() * v3a;
 
             Assert.IsTrue(compare(v3b, new Vector3(13.5f, -48.23f, 0)));
         }
@@ -430,7 +440,7 @@ namespace Unit_Testing
             // homogeneous point translation
             Matrix3 m3c = new Matrix3();
             m3c = m3c.RotateZ(2.2f);
-            m3c.i3 = 55; m3c.j3 = 44; m3c.k3 = 1;
+            m3c.k1 = 55; m3c.k2 = 44; m3c.k3 = 1;
 
             Vector3 v3a = new Vector3(13.5f, -48.23f, 0);
 
@@ -450,7 +460,7 @@ namespace Unit_Testing
 
             Vector4 v4a = new Vector4(13.5f, -48.23f, -54, 0);
 
-            Vector4 v4c = m4b * v4a;
+            Vector4 v4c = m4b.Transpose() * v4a;
             Assert.IsTrue(compare(v4c, new Vector4(13.5f, -48.23f, -54, 0)));
         }
 
@@ -460,7 +470,7 @@ namespace Unit_Testing
             // homogeneous point translation
             Matrix4 m4c = new Matrix4();
             m4c = m4c.RotateZ(2.2f);
-            m4c.i4 = 55; m4c.j4 = 44; m4c.k4 = 99; m4c.w4 = 1;
+            m4c.w1 = 55; m4c.w2 = 44; m4c.w3 = 99; m4c.w4 = 1;
 
             Vector4 v4a = new Vector4(13.5f, -48.23f, -54, 0);
 

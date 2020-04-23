@@ -6,11 +6,11 @@ namespace Tank_Game
 {
     public class Tank_Game
     {
+        public static Game game;
+
         static void Main()
         {
-            Game game = new Game(2500, 1500);
-            
-            
+            game = new Game(2500, 1500);
             game.Init();
 
             while (!WindowShouldClose())
@@ -20,8 +20,6 @@ namespace Tank_Game
             }
 
             game.Shutdown();
-
-            CloseWindow();
         }
     }
 }

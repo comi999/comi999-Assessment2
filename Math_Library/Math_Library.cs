@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data;
-using System.Runtime.Serialization.Json;
 
 namespace Math_Library
 {
@@ -90,19 +88,19 @@ namespace Math_Library
         //Returns the vectors magnitude
         public float Magnitude()
         {
-            return (float)Math.Sqrt(i*i + j*j + k*k);
+            return (float)Math.Sqrt(i * i + j * j + k * k);
         }
 
         //Returns the square of a vectors magnitude
         public float MagnitudeSqrd()
         {
-            return i*i + j*j + k*k;
+            return i * i + j * j + k * k;
         }
 
         //Changes attached vector to a unit vector pointing in the same direction
         public Vector3 Normalise()
         {
-            float inverse_magnitude = 1 / (float)Math.Sqrt(i*i + j*j + k*k);
+            float inverse_magnitude = 1 / (float)Math.Sqrt(i * i + j * j + k * k);
             i *= inverse_magnitude;
             j *= inverse_magnitude;
             k *= inverse_magnitude;
@@ -134,6 +132,13 @@ namespace Math_Library
             i = temp.i;
             j = temp.j;
             k = temp.k;
+        }
+
+        public void Reset()
+        {
+            i = 0;
+            j = 0;
+            k = 0;
         }
         #endregion
     }
@@ -282,7 +287,7 @@ namespace Math_Library
     public class Matrix3
     {
         //Matrix entries. i, j, k represent unit vector components pointing in x+, y+, z+ directions
-        public float 
+        public float
             i1, j1, k1,
             i2, j2, k2,
             i3, j3, k3;
@@ -412,16 +417,16 @@ namespace Math_Library
         //Finds the inverse of a Matrix3
         public Matrix3 Inverse()
         {
-            return 1 / Determinant() * 
+            return 1 / Determinant() *
                 new Matrix3(
                 +j2 * k3 - j3 * k2,
                 -j1 * k3 + j3 * k1,
                 +j1 * k2 - j2 * k1,
-            
+
                 -i2 * k3 + i3 * k2,
                 +i1 * k3 - i3 * k1,
                 -i1 * k2 + i2 * k1,
-            
+
                 +i2 * j3 - i3 * j2,
                 -i1 * j3 + i3 * j1,
                 +i1 * j2 - i2 * j1);
@@ -456,7 +461,7 @@ namespace Math_Library
         {
             return new Matrix3(x, 0, 0, 0, y, 0, 0, 0, 1);
         }
-        
+
         //Resets a Matrix3 back to an identity Matrix
         public void Reset()
         {
@@ -570,8 +575,8 @@ namespace Math_Library
         //ToString overload to print matrices
         public override string ToString()
         {
-            return i1 + ", " + j1 + ", " + k1 + ", " + w1 + ", " + 
-                   i2 + ", " + j2 + ", " + k2 + ", " + w2 + ", " + 
+            return i1 + ", " + j1 + ", " + k1 + ", " + w1 + ", " +
+                   i2 + ", " + j2 + ", " + k2 + ", " + w2 + ", " +
                    i3 + ", " + j3 + ", " + k3 + ", " + w3 + ", " +
                    i4 + ", " + j4 + ", " + k4 + ", " + w4;
         }
@@ -615,9 +620,9 @@ namespace Math_Library
         public float Determinant()
         {
             return +i1 * (j2 * (k3 * w4 - k4 * w3) - k2 * (j3 * w4 - j4 * w3) + w2 * (j3 * k4 - k4 * j3))
-                   -j1 * (i2 * (k3 * w4 - k4 * w3) - k2 * (i3 * w4 - i4 * w3) + w2 * (i3 * k4 - i4 * k3))
-                   +k1 * (i2 * (j3 * w4 - j4 * w3) - j2 * (i3 * w4 - i4 * w3) + w2 * (i3 * j4 - i4 * j3))
-                   -w1 * (i2 * (j3 * k4 - j4 * k3) - j2 * (i3 * k4 - i4 * k3) + k2 * (i3 * j4 - i4 * j3));
+                   - j1 * (i2 * (k3 * w4 - k4 * w3) - k2 * (i3 * w4 - i4 * w3) + w2 * (i3 * k4 - i4 * k3))
+                   + k1 * (i2 * (j3 * w4 - j4 * w3) - j2 * (i3 * w4 - i4 * w3) + w2 * (i3 * j4 - i4 * j3))
+                   - w1 * (i2 * (j3 * k4 - j4 * k3) - j2 * (i3 * k4 - i4 * k3) + k2 * (i3 * j4 - i4 * j3));
         }
 
         //Finds the inverse of a Matrix4
@@ -687,7 +692,7 @@ namespace Math_Library
         #endregion
     }
 
-    //---Colour (32 bit colour functions)---
+    //---Colour (32 bit colour methods and functions)---
     public class Colour
     {
         public int value;
